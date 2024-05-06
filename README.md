@@ -91,6 +91,10 @@ npm install</br>
 setting mailer</br>
 setting database</br>
 
+php artisan key:generate</br>
+php artisan migrate</br>
+php artisan db:seed</br>
+
 
 MAIL_MAILER=smtp</br>
 MAIL_HOST=smtp.gmail.com</br>

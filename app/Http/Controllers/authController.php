@@ -99,7 +99,14 @@ class authController extends Controller
 
         $idtoken = Crypt::encrypt($data->user_id);
 
-        Mail::to($request->email)->send(new KodeVerifikasiMail($refreshtoken));
+        $datasendmail = [
+            'name' => $request->name,
+            'token' => $refreshtoken,
+            'idtoken' => $idtoken,
+            'email' => $request->email
+        ];
+
+        Mail::to($request->email)->send(new KodeVerifikasiMail($datasendmail));
 
         return response()->json([
             'status' => true,
@@ -222,7 +229,8 @@ class authController extends Controller
             'name' => $request->name,
             'token' => $tokenregis,
             'idtoken' => $idtoken,
-            'email' => $request->email
+            'email' => $request->email,
+            'url' => env('APP_URL')
         ];
 
         Mail::to($request->email)->send(new KodeVerifikasiMail($datasendmail));
@@ -290,9 +298,19 @@ class authController extends Controller
 
         $datauser = User::where('email', $request->email)->first();
         $user = User::find($datauser->id);
+
+        // jika email belum diverify tidak bisa login
+        if ($datauser->email_verified_at == null || $datauser->email_verified_at == '0000-00-00 00:00:00') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Email belum diverifikasi'
+            ], 401);
+        }
+
+
         $roles = $user->roles()->pluck('role_name')->toArray();
         $user->tokens()->delete();
-        
+        $tokenaktif = $user->createToken('access_token', $roles, now()->addMinutes(60))->plainTextToken;
 
         if(empty($roles)) {
             $roles = ["user"];
@@ -308,7 +326,7 @@ class authController extends Controller
             'status' => true,
             'message' => 'berhasil proses login',
             // 'token' => $token->plainTextToken
-            'token' => $user->createToken('access_token', $roles, now()->addMinutes(60))->plainTextToken
+            'token' => $tokenaktif
         ], 200);
     }
 

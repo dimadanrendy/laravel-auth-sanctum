@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmation Code</title>
     <style>
         /* Reset CSS */
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
         }
+
         /* Wrapper */
         .wrapper {
             width: 100%;
@@ -19,6 +22,7 @@
             padding: 20px;
             background-color: #f3f3f3;
         }
+
         /* Header */
         .header {
             text-align: center;
@@ -26,6 +30,7 @@
             color: #ffffff;
             padding: 20px;
         }
+
         /* Body */
         .body-content {
             padding: 20px;
@@ -34,6 +39,7 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+
         /* Code Section */
         .code-section {
             background-color: #E1F5FE;
@@ -42,11 +48,13 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
+
         .code {
             font-size: 24px;
             font-weight: bold;
             color: #2196F3;
         }
+
         /* Button */
         .button {
             display: inline-block;
@@ -60,6 +68,7 @@
             margin-bottom: 20px;
             align-items: center;
         }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -68,6 +77,7 @@
             color: #ffffff;
             border-radius: 0 0 8px 8px;
         }
+
         .button-center {
             text-align: center;
             align-content: center;
@@ -75,6 +85,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <!-- Header -->
@@ -84,11 +95,11 @@
 
         <!-- Body Content -->
         <div class="body-content">
-            <p>Hello {{ $data['name'] }},</p>
+            <p>Hello {{ $token['name'] }},</p>
             <p>Your confirmation code is:</p>
             <!-- Code Section -->
             <div class="code-section">
-                <span class="code">{{ $data['token'] }}</span>
+                <span class="code">{{ $token['token'] }}</span>
             </div>
             <!-- Button -->
             <!-- <div class="button-center">
@@ -96,6 +107,8 @@
             </div> -->
             <p>Please use this code to proceed with your action.</p>
             <p>Regards,<br>Your Company</p>
+            <a href="{{$token['url']}}/api/verification?idtoken=&token={{ $token['token'] }}">Verification</a>
+
         </div>
 
         <!-- Footer -->
@@ -104,4 +117,5 @@
         </div>
     </div>
 </body>
+
 </html>

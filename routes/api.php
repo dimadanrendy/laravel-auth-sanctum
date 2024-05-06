@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('/', function(){
     return response()->json([
@@ -30,10 +30,16 @@ Route::get('/', function(){
     ], 401);
 })->name('login');
 
-
+// Rute-rute yang memerlukan autentikasi
 Route::post('registerUser', [authController::class, 'registerUser']);
+Route::post('verification', [authController::class, 'verificationToken']);
+Route::post('refreshverification', [authController::class, 'refreshVerificationToken']);
+Route::post('forgot-password-act', [SendMailController::class, 'forgotPassword']);
+Route::post('forgot-password-act-validasi', [authController::class, 'validasiForgotPassword']);
 Route::post('loginUser', [authController::class, 'loginUser'])->middleware('throttle:login');
 
+
+// Rute-rute yang tidak memerlukan autentikasi
 Route::group(['middleware' => ['auth:sanctum', 'checkHost', 'checkEmail']], function () {
     // Rute-rute yang memerlukan autentikasi dan pengecekan role
     Route::get('product', [productController::class, 'index'])->middleware(('ablity:product-list'));
@@ -46,19 +52,13 @@ Route::group(['middleware' => ['auth:sanctum', 'checkHost', 'checkEmail']], func
     Route::get('refresh', [authController::class, 'refreshToken']);
 });
 
-Route::post('verification', [authController::class, 'verificationToken']);
-Route::post('refreshverification', [authController::class, 'refreshVerificationToken']);
 
-Route::post('forgot-password-act', [SendMailController::class, 'forgotPassword']);
-Route::post('forgot-password-act-validasi', [authController::class, 'validasiForgotPassword']);
 
 Route::post('geojson', [LeafletController::class, 'storeGeojson']);
 Route::post('titikkoordinat', [LeafletController::class, 'storeTitikKoordinat']);
 Route::get('semuatitikkoordinat', [LeafletController::class, 'getTitikKoordinat']);
 Route::get('get-image/{id}', [LeafletController::class, 'getImageKoordinat']);
 Route::post('post-image', [LeafletController::class, 'storeTitikKoordinat']);
-
-
 Route::get('private/{file}', [ViewFoto::class, 'viewFoto'])->name('private');
 
 
