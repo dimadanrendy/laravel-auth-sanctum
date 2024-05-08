@@ -104,4 +104,4 @@ MAIL_PASSWORD=yauoravpkdqlxctn</br>
 MAIL_ENCRYPTION=tsl</br>
 MAIL_FROM_ADDRESS=rendyariawan07052000@gmail.com</br>
 MAIL_FROM_NAME=Websiteku</br>
-belum selsai
+belum selsai</br>
