@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/', function(){
+Route::get('/', function () {
     return response()->json([
         'status' => false,
         'message' => 'akses tidak diperbolehkan'
@@ -40,7 +40,7 @@ Route::post('loginUser', [authController::class, 'loginUser'])->middleware('thro
 
 
 // Rute-rute yang tidak memerlukan autentikasi
-Route::group(['middleware' => ['auth:sanctum', 'checkHost', 'checkEmail']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'checkEmail']], function () {
     // Rute-rute yang memerlukan autentikasi dan pengecekan role
     Route::get('product', [productController::class, 'index'])->middleware(('ablity:product-list'));
     Route::get('product/{id}', [productController::class, 'show'])->middleware(('ablity:product-list'));
@@ -60,5 +60,3 @@ Route::get('semuatitikkoordinat', [LeafletController::class, 'getTitikKoordinat'
 Route::get('get-image/{id}', [LeafletController::class, 'getImageKoordinat']);
 Route::post('post-image', [LeafletController::class, 'storeTitikKoordinat']);
 Route::get('private/{file}', [ViewFoto::class, 'viewFoto'])->name('private');
-
-
